@@ -15,11 +15,6 @@ public class JedisConnector implements RedisConnector {
     }
 
     @Override
-    public Boolean exists(byte[] key) {
-        return jedis.exists(key);
-    }
-
-    @Override
     public Long expire(byte[] key, int seconds) {
         return jedis.expire(key, seconds);
     }

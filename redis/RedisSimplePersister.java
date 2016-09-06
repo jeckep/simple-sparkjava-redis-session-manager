@@ -33,7 +33,7 @@ public class RedisSimplePersister implements Persister {
     }
 
     @Override
-    public void save(String sessionCookieValue, Session session, int expire) {
+    public void save(String sessionCookie, Session session, int expire) {
         try {
             Map<String, Object> sessionAttrs = new HashMap<>();
             for(String key: session.attributes()){
@@ -43,7 +43,7 @@ public class RedisSimplePersister implements Persister {
                 sessionAttrs.put(key, session.attribute(key));
             }
             byte[] value = convertToBytes(sessionAttrs);
-            redis.set(sessionCookieValue.getBytes(), value);
+            redis.set(sessionCookie.getBytes(), value);
             //no need to set expire on save to redis, because we do it in on every request when restore from redis
             //redis.expire(sessionCookieValue.getBytes(), expire);
         } catch (IOException e) {

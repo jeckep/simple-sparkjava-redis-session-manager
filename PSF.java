@@ -1,7 +1,6 @@
 package com.jeckep.chat.session.persist;
 
 
-import com.jeckep.chat.session.persist.redis.RedisSimplePersister;
 import org.eclipse.jetty.server.session.AbstractSession;
 import spark.Filter;
 import spark.Request;
@@ -23,8 +22,6 @@ import java.util.*;
 
 public class PSF {
     public static final String SESSION_COOKIE_NAME = "PERSISTENT_SESSION";
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RedisSimplePersister.class);
-
 
     private Persister persister;
     private List<EventListener> listeners = new ArrayList<>();
@@ -50,7 +47,6 @@ public class PSF {
 
             // we have to restore session from persistent storage every time,
             // if we have more than one app node and load balancer without sticky session
-            log.debug("Restore session from persistent storage");
             Map<String, Object> attrs = persister.restore(sessionCookie.getValue(), expire);
             for(String key: attrs.keySet()){
                 request.session().attribute(key, attrs.get(key));
@@ -67,7 +63,6 @@ public class PSF {
             SessionChangedListener.setUnchanged(request.session());
 
             String sessionCookieValue = request.session().attribute(SESSION_COOKIE_NAME);
-            log.debug("Save session to persistent storage");
             persister.save(sessionCookieValue, request.session(), expire);
         }
     };
