@@ -23,7 +23,7 @@ public static void main(String[] args) {
 Customisation
 -------------
 
-If you don't want to user [jedis](https://github.com/xetorthio/jedis) as redis client,  create you own class implementing RedisConnector instead of JedisConnector.
+If you don't want to use [jedis](https://github.com/xetorthio/jedis) as redis client,  create you own class implementing RedisConnector instead of JedisConnector.
 
 Disclaimer
 ----------
