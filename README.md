@@ -16,7 +16,7 @@ public static void main(String[] args) {
    before("*",                  psf.getBeforeFilter());
    // before-filters, routes, after-filters 
    
-   //after all after filters
+   //after all after-filters
    after("*",                   psf.getAfterFilter());
 }
 ```
