@@ -10,6 +10,7 @@ Getting started
 
 ```java
 public static void main(String[] args) {
+   final Jedis jedis = new Jedis("redis");
    final PSF psf = new PSF(new RedisSimplePersister(new JedisConnector(jedis)));
    
    //before all before-filters                 
