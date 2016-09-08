@@ -1,6 +1,8 @@
 Simple Redis Session Manager for sparkjava
 ==============================================
 
+[![License badge](http://img.shields.io/badge/license-Apache%202.0-green.svg?style=flat)](https://raw.githubusercontent.com/jeckep/simple-sparkjava-redis-session-manager/master/LICENSE.txt)
+
 Simple session manager for [sparkjava](https://github.com/perwendel/spark). It retrieves all session attributes from Redis on every request, and save them back to Redis if session attributes were changed during request processing.
 
 Getting started
