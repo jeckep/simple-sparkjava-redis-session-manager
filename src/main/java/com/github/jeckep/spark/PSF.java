@@ -1,4 +1,4 @@
-package com.jeckep.chat.session.persist;
+package com.github.jeckep.spark;
 
 
 import org.eclipse.jetty.server.session.AbstractSession;
@@ -10,6 +10,7 @@ import spark.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
+import java.io.Serializable;
 import java.util.*;
 
 /*
@@ -47,7 +48,7 @@ public class PSF {
 
             // we have to restore session from persistent storage every time,
             // if we have more than one app node and load balancer without sticky session
-            Map<String, Object> attrs = persister.restore(sessionCookie.getValue(), expire);
+            Map<String, Serializable> attrs = persister.restore(sessionCookie.getValue(), expire);
             for(String key: attrs.keySet()){
                 request.session().attribute(key, attrs.get(key));
             }
@@ -59,11 +60,21 @@ public class PSF {
     };
 
     private Filter afterFilter = (Request request, Response response) -> {
-        if(SessionChangedListener.checkChanged(request.session())) {
-            SessionChangedListener.setUnchanged(request.session());
+        final Session session = request.session();
+
+        if(SessionChangedListener.checkChanged(session)) {
+            SessionChangedListener.setUnchanged(session);
+
+            Map<String, Serializable> sessionAttrs = new HashMap<>();
+            for(String key: session.attributes()){
+                // do not store session cookie value in a map, because it is a key,
+                // we can do it, but there is no need
+                if(PSF.SESSION_COOKIE_NAME.equals(key)) continue;
+                sessionAttrs.put(key, session.attribute(key));
+            }
 
             String sessionCookieValue = request.session().attribute(SESSION_COOKIE_NAME);
-            persister.save(sessionCookieValue, request.session(), expire);
+            persister.save(sessionCookieValue, sessionAttrs, expire);
         }
     };
 

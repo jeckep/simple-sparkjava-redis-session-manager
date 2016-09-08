@@ -1,8 +1,6 @@
-package com.jeckep.chat.session.persist.redis;
+package com.github.jeckep.spark.redis;
 
-import com.jeckep.chat.session.persist.PSF;
-import com.jeckep.chat.session.persist.Persister;
-import spark.Session;
+import com.github.jeckep.spark.Persister;
 
 import java.io.*;
 import java.util.HashMap;
@@ -18,12 +16,12 @@ public class RedisSimplePersister implements Persister {
     }
 
     @Override
-    public Map<String, Object> restore(String sessionCookieValue, int expire) {
+    public Map<String, Serializable> restore(String sessionCookieValue, int expire) {
         byte[] value = redis.get(sessionCookieValue.getBytes());
         if (value != null) {
             redis.expire(sessionCookieValue.getBytes(), expire);
             try {
-                Map<String, Object> attrs = (Map<String, Object>) convertFromBytes(value);
+                Map<String, Serializable> attrs = (Map<String, Serializable>) convertFromBytes(value);
                 return attrs;
             } catch (IOException | ClassNotFoundException e) {
                 log.error("Cannot convert byte[] to session attrs", e);
@@ -33,15 +31,8 @@ public class RedisSimplePersister implements Persister {
     }
 
     @Override
-    public void save(String sessionCookie, Session session, int expire) {
+    public void save(String sessionCookie, Map<String, Serializable> sessionAttrs, int expire) {
         try {
-            Map<String, Object> sessionAttrs = new HashMap<>();
-            for(String key: session.attributes()){
-                // do not store session cookie value in a map, because it is a key,
-                // we can do it, but there is no need
-                if(PSF.SESSION_COOKIE_NAME.equals(key)) continue;
-                sessionAttrs.put(key, session.attribute(key));
-            }
             byte[] value = convertToBytes(sessionAttrs);
             redis.set(sessionCookie.getBytes(), value);
             //no need to set expire on save to redis, because we do it in on every request when restore from redis

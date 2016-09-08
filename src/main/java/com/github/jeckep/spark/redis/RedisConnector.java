@@ -1,4 +1,4 @@
-package com.jeckep.chat.session.persist.redis;
+package com.github.jeckep.spark.redis;
 
 public interface RedisConnector {
     byte[] get(byte[] key);

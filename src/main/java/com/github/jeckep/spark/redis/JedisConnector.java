@@ -1,4 +1,4 @@
-package com.jeckep.chat.session.persist.redis;
+package com.github.jeckep.spark.redis;
 
 import redis.clients.jedis.BinaryJedisCommands;
 
