@@ -92,9 +92,12 @@ public class PSF {
     }
 
     private static Cookie getCookieFromRequest(Request req, String name){
-        for(Cookie cookie: req.raw().getCookies()){
-            if(name.equals(cookie.getName())){
-                return cookie;
+        Cookie[] cookies = req.raw().getCookies();
+        if(cookies != null){
+            for(Cookie cookie: req.raw().getCookies()){
+                if(name.equals(cookie.getName())){
+                    return cookie;
+                }
             }
         }
         return null;
