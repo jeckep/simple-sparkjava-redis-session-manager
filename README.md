@@ -9,7 +9,7 @@ Simple session manager for [spark](https://github.com/perwendel/spark). It retri
 Getting started
 ---------------
 
-Add to yuor pom:
+Add to your pom.xml:
 
 ```xml
 <dependency>
@@ -19,7 +19,7 @@ Add to yuor pom:
 </dependency>
 ```
 
-Add to you main app class:
+Add to your main app class:
 
 ```java
 public static void main(String[] args) {
