@@ -23,8 +23,8 @@ Add to your main app class:
 
 ```java
 public static void main(String[] args) {
-   final Jedis jedis = new Jedis("redis");
-   final PSF psf = new PSF(new RedisSimplePersister(new JedisConnector(jedis)));
+   final JedisPool pool = new JedisPool(new JedisPoolConfig(), "redis");
+   final PSF psf = new PSF(new RedisSimplePersister(new JedisThreadSafeConnector(pool)));
    
    //before all before-filters                 
    before("*",                  psf.getBeforeFilter());
