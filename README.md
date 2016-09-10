@@ -27,11 +27,10 @@ public static void main(String[] args) {
    final PSF psf = new PSF(new RedisSimplePersister(new JedisThreadSafeConnector(pool)));
    
    //before all before-filters                 
-   before("*",                  psf.getBeforeFilter());
-   // before-filters, routes, after-filters 
+   before("*", psf.getBeforeFilter());
    
    //after all after-filters
-   after("*",                   psf.getAfterFilter());
+   after("*", psf.getAfterFilter());
 }
 ```
 
