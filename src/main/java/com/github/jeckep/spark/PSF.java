@@ -146,7 +146,8 @@ public class PSF {
         }
 
         private void setChanged(HttpSessionBindingEvent event){
-            if(!ATTR_NAME.equals(event.getName())){
+            if(!ATTR_NAME.equals(event.getName())
+               && !PSF.SESSION_COOKIE_NAME.equals(event.getName())){
                 event.getSession().setAttribute(ATTR_NAME,Boolean.TRUE);
             }
         }

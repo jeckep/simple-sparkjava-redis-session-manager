@@ -30,4 +30,11 @@ public class JedisThreadSafeConnector implements RedisConnector {
             return jedis.set(key, value);
         }
     }
+
+    @Override
+    public Long del(byte[] key) {
+        try (Jedis jedis = pool.getResource()) {
+            return jedis.del(key);
+        }
+    }
 }

@@ -33,10 +33,14 @@ public class RedisSimplePersister implements Persister {
     @Override
     public void save(String sessionCookie, Map<String, Serializable> sessionAttrs, int expire) {
         try {
-            byte[] value = convertToBytes(sessionAttrs);
-            redis.set(sessionCookie.getBytes(), value);
-            //no need to set expire on save to redis, because we do it in on every request when restore from redis
-            //redis.expire(sessionCookieValue.getBytes(), expire);
+            if(sessionAttrs.size() == 0){
+                redis.del(sessionCookie.getBytes());
+            }else{
+                byte[] value = convertToBytes(sessionAttrs);
+                //TODO do it in one command
+                redis.set(sessionCookie.getBytes(), value);
+                redis.expire(sessionCookie.getBytes(), expire);
+            }
         } catch (IOException e) {
             log.error("Cannot convert session attrs to byte[]", e);
         }
